@@ -11,7 +11,7 @@ const WalletCard = ({ amount, setAddBalance }) => {
   return (
     <div className="px-8 py-12 rounded-lg w-96 bg-[#9b9b9b] flex flex-col items-center gap-3 shadow-lg">
       <p className="text-center text-2xl text-white">
-        Wallet Balance: <span className="text-green-900">Rs.{amount}</span>
+        Wallet Balance: <span className="text-[#9cfb5e] font-bold">Rs.{amount}</span>
       </p>
       <Button className="bg-green-500" onClick={handleOpenAddBalance}>
         +Add Income
