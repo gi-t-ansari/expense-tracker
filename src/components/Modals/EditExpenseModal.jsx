@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -12,12 +12,13 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Select from "react-select";
 import { categoryOptions } from "../../config";
+import moment from "moment";
 
-export default function AddExpenseModal({
+export default function EditExpenseModal({
   open,
-  handleOpen,
   onClose,
   setExpenseData,
+  data,
   setWalletBalance,
   setExpenseAmount,
 }) {
@@ -31,6 +32,11 @@ export default function AddExpenseModal({
     date: yup.date("Input ust be a date").required("This field is required"),
   });
 
+  const categoryDefaultValue = {
+    label: data?.category,
+    value: data?.category,
+  };
+
   const {
     register,
     reset,
@@ -42,15 +48,50 @@ export default function AddExpenseModal({
     control,
   } = useForm({ resolver: yupResolver(schema) });
 
-  const handleAddExpense = (data) => {
-    if (data) {
-      setExpenseData((prev) => [...prev, data]);
-      setExpenseAmount((prev) => prev + parseInt(data?.price));
-      setWalletBalance((prev) => prev - parseInt(data?.price));
+  const handleEditExpense = (formData) => {
+    if (formData) {
+      setExpenseData(
+        (prev) =>
+          (prev = prev?.map((item, index) =>
+            index === data?.index ? formData : item
+          ))
+      );
+      setWalletBalance(
+        (prev) => prev + parseInt(data?.price) - parseInt(formData?.price)
+      );
+      setExpenseAmount(
+        (prev) => prev - parseInt(data?.price) + parseInt(formData?.price)
+      );
       onClose();
       reset();
     }
   };
+
+  const formValues = getValues();
+
+  const isSame = () => {
+    if (
+      data?.title === watch("title") &&
+      data?.price === watch("price") &&
+      data?.category === watch("category") &&
+      moment(data?.date).format("YYYY-MM-DD") === watch("date")
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const setAllValues = () => {
+    setValue("title", data?.title);
+    setValue("price", data?.price);
+    setValue("date", moment(data?.date).format("YYYY-MM-DD"));
+    setValue("category", data?.category);
+  };
+
+  useEffect(() => {
+    setAllValues();
+  }, [data]);
 
   const handleClose = () => {
     onClose();
@@ -59,11 +100,11 @@ export default function AddExpenseModal({
 
   return (
     <>
-      <Dialog open={open} handler={handleOpen} className="p-4">
-        <DialogHeader>Add Expense</DialogHeader>
+      <Dialog open={open} className="p-4">
+        <DialogHeader>Update Expense</DialogHeader>
         <DialogBody>
           <form
-            onSubmit={handleSubmit(handleAddExpense)}
+            onSubmit={handleSubmit(handleEditExpense)}
             className="flex flex-col gap-2"
           >
             <div className="flex justify-between">
@@ -98,6 +139,7 @@ export default function AddExpenseModal({
                         label: category?.label,
                         value: category?.value,
                       }))}
+                      defaultValue={categoryDefaultValue}
                     />
                   )}
                   defaultValue=""
@@ -119,8 +161,12 @@ export default function AddExpenseModal({
             </div>
 
             <div>
-              <Button type="submit" className="bg-[#f5bb4b] shadow-2xl mr-2">
-                <span>Add Expense</span>
+              <Button
+                type="submit"
+                className="bg-[#f5bb4b] shadow-2xl mr-2"
+                disabled={isSame()}
+              >
+                <span>Update Expense</span>
               </Button>
               <Button
                 onClick={handleClose}

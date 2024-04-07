@@ -2,7 +2,7 @@ import { Button } from "@material-tailwind/react";
 import React, { useState } from "react";
 import { AddExpenseModal } from "../Modals";
 
-const ExpenseCard = ({ setExpenseData, amount }) => {
+const ExpenseCard = ({ setExpenseData, amount, setExpenseAmount, setWalletBalance }) => {
   const [openAddExpense, setOpenAddExpense] = useState(false);
 
   const handleOpenAddExpense = () => setOpenAddExpense(true);
@@ -20,6 +20,8 @@ const ExpenseCard = ({ setExpenseData, amount }) => {
         onClose={() => setOpenAddExpense(false)}
         handleOpen={handleOpenAddExpense}
         setExpenseData={setExpenseData}
+        setExpenseAmount={setExpenseAmount}
+        setWalletBalance={setWalletBalance}
       />
     </div>
   );
