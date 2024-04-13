@@ -11,7 +11,7 @@ const ExpenseTable = ({
   setExpenseData,
   setExpenseAmount,
   setWalletBalance,
-  walletBalance
+  walletBalance,
 }) => {
   const [rows, setRows] = useState(data ?? []);
   const [openEditExpense, setOpenEditExpense] = useState(false);
@@ -145,35 +145,40 @@ const ExpenseTable = ({
           )}
         </tbody>
       </table>
-      <CardFooter className="flex justify-between items-center gap-2 py-3 sticky left-0">
-        <Button
-          size="sm"
-          className="md:py-2 py-1"
-          onClick={handlePrevious}
-          disabled={startIndex <= 0 ? true : false}
-        >
-          <Typography className="text-xs hidden md:block">Previous</Typography>
-          <FaAngleLeft className="md:hidden text-lg" />
-        </Button>
-        {rows?.length > 0 && (
+      {rows?.length > 0 && (
+        <CardFooter className="flex justify-between items-center gap-2 py-3 sticky left-0">
+          <Button
+            size="sm"
+            className="md:py-2 py-1"
+            onClick={handlePrevious}
+            disabled={startIndex <= 0 ? true : false}
+          >
+            <Typography className="text-xs hidden md:block">
+              Previous
+            </Typography>
+            <FaAngleLeft className="md:hidden text-lg" />
+          </Button>
+
           <Typography>
+            Transactions{" "}
             {rows?.slice(startIndex, endIndex).length === 1
               ? rows?.length
-              : `${startIndex + 1}-${
+              : `${startIndex + 1} - ${
                   endIndex >= rows?.length ? rows?.length : endIndex
                 }`}
           </Typography>
-        )}
-        <Button
-          size="sm"
-          className="md:py-2 py-1"
-          onClick={handleNext}
-          disabled={endIndex >= data?.length ? true : false}
-        >
-          <Typography className="text-xs hidden md:block">Next</Typography>
-          <FaAngleRight className="md:hidden text-lg" />
-        </Button>
-      </CardFooter>
+s
+          <Button
+            size="sm"
+            className="md:py-2 py-1"
+            onClick={handleNext}
+            disabled={endIndex >= data?.length ? true : false}
+          >
+            <Typography className="text-xs hidden md:block">Next</Typography>
+            <FaAngleRight className="md:hidden text-lg" />
+          </Button>
+        </CardFooter>
+      )}
       <EditExpenseModal
         open={openEditExpense}
         data={editableExpense}

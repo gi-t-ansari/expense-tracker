@@ -54,14 +54,16 @@ const Dashboard = () => {
             walletBalance={walletBalance}
           />
         </div>
-        <div className="md:mr-20">
-          <ExpenseChart
-            expenseAmount={expenseAmount}
-            totalFoodExpense={totalFoodExpense}
-            totalTravelExpense={totalTravelExpense}
-            totalEntertainmentExpense={totalEntertainmentExpense}
-          />
-        </div>
+        {expenseData?.length > 0 && (
+          <div className="md:mr-20">
+            <ExpenseChart
+              expenseAmount={expenseAmount}
+              totalFoodExpense={totalFoodExpense}
+              totalTravelExpense={totalTravelExpense}
+              totalEntertainmentExpense={totalEntertainmentExpense}
+            />
+          </div>
+        )}
       </section>
       <section className="mt-6 flex md:flex-row flex-col gap-5 justify-between">
         <div className="md:basis-[55%] basis-[100%] h-fit">
