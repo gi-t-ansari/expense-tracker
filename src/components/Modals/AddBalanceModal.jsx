@@ -53,14 +53,15 @@ export default function AddBalanceModal({
         <DialogBody>
           <form
             onSubmit={handleSubmit(handleAddBalance)}
-            className="flex gap-3 items-center"
+            className="flex md:flex-row flex-col gap-3 md:items-center"
           >
-            <div className="basis-[50%]">
+            <div className="md:basis-[50%] basis-[100%]">
               <Input
                 {...register("incomeAmount")}
                 label="Income Amount*"
                 type="text"
                 error={errors?.incomeAmount}
+                // className="w-96"
               />
               {errors?.incomeAmount && (
                 <span className="text-red-500 text-sm">
@@ -68,16 +69,17 @@ export default function AddBalanceModal({
                 </span>
               )}
             </div>
-
-            <Button type="submit" className="bg-[#f5bb4b] shadow-2xl">
-              <span>Add Balance</span>
-            </Button>
-            <Button
-              onClick={handleClose}
-              className="mr-1 bg-[#e2e3e3] text-black shadow-2xl"
-            >
-              <span>Cancel</span>
-            </Button>
+            <div>
+              <Button type="submit" className="bg-[#f5bb4b] shadow-2xl py-2 px-4 text-[12px] mr-2">
+                <span>Add Balance</span>
+              </Button>
+              <Button
+                onClick={handleClose}
+                className=" bg-[#e2e3e3] text-black shadow-2xl py-2 px-4 text-[12px]"
+              >
+                <span>Cancel</span>
+              </Button>
+            </div>
           </form>
         </DialogBody>
       </Dialog>

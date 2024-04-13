@@ -1,14 +1,22 @@
-import { useState } from "react";
-import { Button } from "@material-tailwind/react";
+import { ToastContainer } from "react-toastify";
 import { Dashboard } from "./pages";
 
 function App() {
-  const [count, setCount] = useState(0);
+
+  const toastProps = {
+    position: "top-center",
+    autoClose: 1000,
+  };
 
   return (
-    <main className="p-8 bg-[#3b3b3b] h-[100vh] w-[100%]">
+    <>
+     {/* <ToastContainer {...toastProps} /> */}
+    <main className="md:p-8 px-4 py-6 bg-[#3b3b3b] md:h-[100vh] w-[100%]">
+     
       <Dashboard />
     </main>
+    </>
+    
   );
 }
 

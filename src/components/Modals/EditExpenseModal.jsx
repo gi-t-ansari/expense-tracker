@@ -21,13 +21,19 @@ export default function EditExpenseModal({
   data,
   setWalletBalance,
   setExpenseAmount,
+  walletBalance
 }) {
   const schema = yup.object().shape({
     title: yup.string().required("This field is required"),
     price: yup
       .string()
       .required("This field is required")
-      .matches(/^\d+$/, "Input must contain only numbers"),
+      .matches(/^\d+$/, "Input must contain only numbers")
+      .test(
+        "isGreater",
+        `Your wallet balance is ${walletBalance + parseInt(data?.price)}. Add balance!`,
+        (val) => parseInt(val) < walletBalance + parseInt(data?.price)
+      ),
     category: yup.string().required("This field is required"),
     date: yup.date("Input ust be a date").required("This field is required"),
   });
@@ -107,8 +113,8 @@ export default function EditExpenseModal({
             onSubmit={handleSubmit(handleEditExpense)}
             className="flex flex-col gap-2"
           >
-            <div className="flex justify-between">
-              <div className="mb-2 basis-[49%]">
+            <div className="flex md:flex-row flex-col justify-between">
+              <div className="md:mb-2 mb-4 basis-[49%]">
                 <Input {...register("title")} label="Title*" type="text" />
                 {errors?.title && (
                   <span className="text-red-500 text-sm">
@@ -125,8 +131,8 @@ export default function EditExpenseModal({
                 )}
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="mb-2 basis-[49%]">
+            <div className="flex  md:flex-row flex-col justify-between">
+              <div className="md:mb-2 mb-4 basis-[49%]">
                 <Controller
                   control={control}
                   name="category"
@@ -140,6 +146,7 @@ export default function EditExpenseModal({
                         value: category?.value,
                       }))}
                       defaultValue={categoryDefaultValue}
+                      placeholder="Select Category"
                     />
                   )}
                   defaultValue=""
@@ -163,14 +170,14 @@ export default function EditExpenseModal({
             <div>
               <Button
                 type="submit"
-                className="bg-[#f5bb4b] shadow-2xl mr-2"
+                className="bg-[#f5bb4b] shadow-2xl py-2 px-4 text-[12px] mr-2"
                 disabled={isSame()}
               >
                 <span>Update Expense</span>
               </Button>
               <Button
                 onClick={handleClose}
-                className="mr-1 bg-[#e2e3e3] text-black shadow-2xl"
+                className=" bg-[#e2e3e3] text-black shadow-2xl py-2 px-4 text-[12px]"
               >
                 <span>Cancel</span>
               </Button>

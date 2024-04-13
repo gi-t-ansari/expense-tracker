@@ -12,6 +12,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Select from "react-select";
 import { categoryOptions } from "../../config";
+import { toast } from "react-toastify";
 
 export default function AddExpenseModal({
   open,
@@ -20,13 +21,19 @@ export default function AddExpenseModal({
   setExpenseData,
   setWalletBalance,
   setExpenseAmount,
+  walletBalance,
 }) {
   const schema = yup.object().shape({
     title: yup.string().required("This field is required"),
     price: yup
       .string()
       .required("This field is required")
-      .matches(/^\d+$/, "Input must contain only numbers"),
+      .matches(/^\d+$/, "Input must contain only numbers")
+      .test(
+        "isGreater",
+        `Your wallet balance is ${walletBalance}. Add balance!`,
+        (val) => parseInt(val) < walletBalance
+      ),
     category: yup.string().required("This field is required"),
     date: yup.date("Input ust be a date").required("This field is required"),
   });
@@ -66,8 +73,8 @@ export default function AddExpenseModal({
             onSubmit={handleSubmit(handleAddExpense)}
             className="flex flex-col gap-2"
           >
-            <div className="flex justify-between">
-              <div className="mb-2 basis-[49%]">
+            <div className="flex md:flex-row flex-col justify-between">
+              <div className="md:mb-2 mb-4 basis-[49%]">
                 <Input {...register("title")} label="Title*" type="text" />
                 {errors?.title && (
                   <span className="text-red-500 text-sm">
@@ -84,8 +91,8 @@ export default function AddExpenseModal({
                 )}
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="mb-2 basis-[49%]">
+            <div className="flex md:flex-row flex-col justify-between">
+              <div className="md:mb-2 mb-4 basis-[49%]">
                 <Controller
                   control={control}
                   name="category"
@@ -98,6 +105,7 @@ export default function AddExpenseModal({
                         label: category?.label,
                         value: category?.value,
                       }))}
+                      placeholder="Select Category"
                     />
                   )}
                   defaultValue=""
@@ -119,12 +127,12 @@ export default function AddExpenseModal({
             </div>
 
             <div>
-              <Button type="submit" className="bg-[#f5bb4b] shadow-2xl mr-2">
+              <Button type="submit" className="bg-[#f5bb4b] shadow-2xl py-2 px-4 text-[12px] mr-2">
                 <span>Add Expense</span>
               </Button>
               <Button
                 onClick={handleClose}
-                className="mr-1 bg-[#e2e3e3] text-black shadow-2xl"
+                className="bg-[#e2e3e3] text-black shadow-2xl py-2 px-4 text-[12px]"
               >
                 <span>Cancel</span>
               </Button>
