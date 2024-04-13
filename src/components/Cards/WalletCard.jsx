@@ -9,7 +9,7 @@ const WalletCard = ({ amount, setAddBalance }) => {
     setOpenAddBalance(true);
   };
   return (
-    <div className="md:px-8 md:py-12 rounded-lg md:w-96 p-6 px-10 w-76 bg-[#9b9b9b] flex flex-col items-center gap-3 shadow-lg">
+    <div className="md:px-8 md:py-12 rounded-lg md:w-96 p-6 w-76 bg-[#9b9b9b] flex flex-col items-center gap-3 shadow-lg">
       <p className="text-center md:text-2xl text-xl text-white">
         Wallet Balance: <span className="text-[#9cfb5e] font-bold">Rs. {amount}</span>
       </p>
