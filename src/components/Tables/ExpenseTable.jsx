@@ -167,7 +167,6 @@ const ExpenseTable = ({
                   endIndex >= rows?.length ? rows?.length : endIndex
                 }`}
           </Typography>
-s
           <Button
             size="sm"
             className="md:py-2 py-1"
